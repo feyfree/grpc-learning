@@ -53,12 +53,16 @@ func (s *server) GetProduct(ctx context.Context, in *pb.ProductID) (*pb.Product,
 }
 
 func main() {
+	// 绑定端口
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+	// 生成gRpc server
 	s := grpc.NewServer()
+	// 注册服务 到grpc server
 	pb.RegisterProductInfoServer(s, &server{})
+	// 启动
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
